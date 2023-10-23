@@ -6,28 +6,29 @@ namespace CobeBase.UI
     public class LoadingView : MonoBehaviour
     {
         [SerializeField]
-        private CanvasGroup Curtain;
+        private CanvasGroup _curtain;
         private void Awake()
         {
-            DontDestroyOnLoad(this);
+            if(gameObject.activeInHierarchy)
+                gameObject.SetActive(false);
         }
         public void Show()
         {
             gameObject.SetActive(true);
-            Curtain.alpha = 1;
+            _curtain.alpha = 1;
         }
 
         public void Hide() => StartCoroutine(DoFadeIn());
 
         private IEnumerator DoFadeIn()
         {
-            while (Curtain.alpha > 0)
+            while (_curtain.alpha > 0)
             {
-                Curtain.alpha -= 0.03f;
+                _curtain.alpha -= 0.03f;
                 yield return new WaitForSeconds(0.03f);
             }
 
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

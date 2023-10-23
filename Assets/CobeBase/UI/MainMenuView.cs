@@ -1,6 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using CobeBase.MainMenu;
+using UniRx;
+using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CobeBase.UI
 {
@@ -8,17 +10,18 @@ namespace CobeBase.UI
     {
         [SerializeField]
         private Button _playButton;
+        private IPresenter _presenter;
 
-        public event UnityAction Play
+        [Inject]
+        private void Construct(IPresenter mainMenuPresenter)
         {
-            add
-            {
-                _playButton.onClick.AddListener(value);
-            }
-            remove
-            {
-                _playButton.onClick.RemoveListener(value);
-            }
+            _presenter = mainMenuPresenter;
+        }
+
+
+        private void Start()
+        {
+            _playButton.onClick.AsObservable().Subscribe(_ => _presenter.Play());
         }
     }
 }

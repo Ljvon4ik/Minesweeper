@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CobeBase.UI
 {
@@ -21,4 +23,5 @@ namespace CobeBase.UI
             }
         }
     }
+
 }

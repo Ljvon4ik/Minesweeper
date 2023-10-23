@@ -1,31 +1,30 @@
-﻿using CobeBase.UI;
-using UnityEngine;
+﻿using CobeBase.Infrastructure.SceneManagement;
+using CobeBase.UI;
+using Cysharp.Threading.Tasks;
 
 namespace CobeBase.Infrastructure.States
 {
     public class MainMenuState : IState
     {
-        private GameStateMachine _gameStateMachine;
-        private MainMenuView _view;
+        private SceneLoader _sceneLoader;
+        private LoadingView _loadingView;
 
-        public MainMenuState(GameStateMachine gameStateMachine)
+        public MainMenuState(
+            SceneLoader sceneLoader,
+            LoadingView loadingView)
         {
-            _gameStateMachine = gameStateMachine;
+            _sceneLoader = sceneLoader;
+            _loadingView = loadingView;
         }
-        public void Enter()
+        public async UniTask Enter()
         {
-            _view = Object.FindObjectOfType<MainMenuView>();
-            _view.Play += Play;
+            _loadingView.Show();
+            await _sceneLoader.Load("MainMenuScene");
+            _loadingView.Hide();
         }
 
         public void Exit()
         {
-            _view.Play -= Play;
         }
-        private void Play()
-        {
-            _gameStateMachine.Enter<LoadLevelState>();
-        }
-
     }
 }

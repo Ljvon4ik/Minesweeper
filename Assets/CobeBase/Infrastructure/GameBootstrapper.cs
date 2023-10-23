@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using CobeBase.Infrastructure.States;
 using Zenject;
-using Assets.CobeBase.Infrastructure.States;
 
 namespace CobeBase.Infrastructure
 {
@@ -22,8 +21,6 @@ namespace CobeBase.Infrastructure
             _gameStateMachine.AddState(_statesFactory.Create<GameBootstrapState>());
             _gameStateMachine.AddState(_statesFactory.Create<MainMenuState>());
             _gameStateMachine.AddState(_statesFactory.Create<LevelState>());
-            _gameStateMachine.AddState(_statesFactory.Create<LoadLevelState>());
-            _gameStateMachine.AddState(_statesFactory.Create<LoadMainMenuState>());
 
             _gameStateMachine.Enter<GameBootstrapState>();
 

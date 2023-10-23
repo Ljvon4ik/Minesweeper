@@ -1,36 +1,44 @@
-﻿using CobeBase.Infrastructure.States;
-using CobeBase.UI;
+﻿using CobeBase.UI;
 using Cysharp.Threading.Tasks;
-using UnityEngine.SceneManagement;
-using UnityEngine;
+using CobeBase.Infrastructure.SceneManagement;
+using System.Diagnostics;
+using CobeBase.Services.LogService;
 
-namespace Assets.CobeBase.Infrastructure.States
+namespace CobeBase.Infrastructure.States
 {
     public class GameBootstrapState : IState
     {
         private GameStateMachine _gameStateMachine;
-        public GameBootstrapState(GameStateMachine gameStateMachine)
-        { 
+        private SceneLoader _sceneLoader;
+        private LoadingView _loadingView;
+        private ILogService _logService;
+
+        public GameBootstrapState(GameStateMachine gameStateMachine, 
+            SceneLoader sceneLoader, 
+            LoadingView loadingView,
+            ILogService logService)
+        {
             _gameStateMachine = gameStateMachine;
+            _sceneLoader = sceneLoader;
+            _loadingView = loadingView;
+            _logService = logService;
         }
-        public void Enter()
+
+        public async UniTask Enter()
         {
-            LoadScene().Forget();
-        }
-
-        private async UniTask LoadScene()
-        {
-            LoadingView _loadingView = Object.Instantiate((LoadingView)await Resources.LoadAsync<LoadingView>("LoadingView"));
-
-            await SceneManager.LoadSceneAsync("MainMenuScene", LoadSceneMode.Single);
-
-            _loadingView.Hide();
-
+            _loadingView.Show();
+            await InitServices();
             _gameStateMachine.Enter<MainMenuState>();
+        }
+
+        private async UniTask InitServices()
+        {
+            _logService.Log("Init Services");
         }
 
         public void Exit()
         {
+            _loadingView.Hide();
         }
     }
 }
