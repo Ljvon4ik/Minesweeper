@@ -1,6 +1,6 @@
-﻿using CobeBase.Infrastructure.AssetManagement;
+﻿using CobeBase.Data.StaticData;
+using CobeBase.Infrastructure.AssetManagement;
 using CobeBase.Infrastructure.SceneManagement;
-using CobeBase.Infrastructure.States;
 using CobeBase.Services.LogService;
 using CobeBase.UI;
 using Zenject;
@@ -11,18 +11,43 @@ namespace CobeBase.Core.Installers
     {
         public override void InstallBindings()
         {
-            Container.Bind<ILogService>().To<LogService>().AsSingle();
-            Container.Bind<StatesFactory>().AsSingle();
-            Container.Bind<GameStateMachine>().AsSingle();
-            Container.Bind<AssetLabels>().AsSingle();
-            Container.Bind<AssetProvider>().AsSingle();
-            Container.Bind<SceneLoader>().AsSingle();
+            BindLogService();
+            BindGameStateMachine();
+            BindAssetProvider();
+            BindSceneLoader();
             BindLoadingView();
+            BindLevelsDatabase();
         }
+
+        private void BindLevelsDatabase()
+        {
+            Container.Bind<LevelsDatabase>().FromScriptableObjectResource(AssetPath.LevelsDatabase).AsSingle();
+        }
+
+        private void BindSceneLoader()
+        {
+            Container.Bind<SceneLoader>().AsSingle();
+        }
+
+        private void BindAssetProvider()
+        {
+            Container.Bind<AssetProvider>().AsSingle();
+        }
+
+        private void BindGameStateMachine()
+        {
+            GameStateMachineInstaller.Install(Container);
+        }
+
+        private void BindLogService()
+        {
+            Container.Bind<ILogService>().To<LogService>().AsSingle();
+        }
+
         private void BindLoadingView()
         {
             Container.Bind<LoadingView>()
-                .FromComponentInNewPrefabResource(AssetLabels.LoadingView)
+                .FromComponentInNewPrefabResource(AssetPath.LoadingView)
                 .AsSingle();
         }
     }

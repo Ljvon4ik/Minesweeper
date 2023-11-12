@@ -32,6 +32,14 @@ namespace CobeBase.Data.StaticData
 
             return null;
         }
+
+        public int NumberOfLevels()
+        {
+            if (_levelsCached.Count == 0)
+                Init();
+
+            return _levelsCached.Count;
+        }
     }
 }
 

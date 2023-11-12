@@ -5,9 +5,16 @@ namespace CobeBase.Infrastructure.SceneManagement
 {
     public class SceneLoader
     {
-        public async UniTask Load(string sceneName)
+        private readonly string _levelSceneName = "LevelScene";
+        private readonly string _mainMenuSceneName = "MainMenuScene";
+
+        public async UniTask LoadLevelScene()
         {
-            await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+            await SceneManager.LoadSceneAsync(_levelSceneName, LoadSceneMode.Single);
+        }
+        public async UniTask LoadMainMenuScene()
+        {
+            await SceneManager.LoadSceneAsync(_mainMenuSceneName, LoadSceneMode.Single);
         }
     }
 }

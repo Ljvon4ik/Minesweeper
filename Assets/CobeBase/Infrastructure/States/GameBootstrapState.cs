@@ -1,7 +1,6 @@
 ﻿using CobeBase.UI;
 using Cysharp.Threading.Tasks;
 using CobeBase.Infrastructure.SceneManagement;
-using System.Diagnostics;
 using CobeBase.Services.LogService;
 
 namespace CobeBase.Infrastructure.States

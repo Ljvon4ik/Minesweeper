@@ -19,7 +19,7 @@ namespace CobeBase.Infrastructure.States
         public async UniTask Enter()
         {
             _loadingView.Show();
-            await _sceneLoader.Load("MainMenuScene");
+            await _sceneLoader.LoadMainMenuScene();
             _loadingView.Hide();
         }
 

@@ -1,35 +1,45 @@
-﻿using CobeBase.Data.StaticData;
-using CobeBase.MainMenu;
-using CobeBase.UI;
+﻿using Assets.CobeBase.UI.Services;
+using CobeBase.Infrastructure.States.MainMenuSceneStates;
+using CobeBase.UI.Factory;
 using System;
-using UnityEngine;
 using Zenject;
 
 namespace CobeBase.Core.Installers
 {
     public class MainMenuInstaller : MonoInstaller
     {
-        [SerializeField] MainMenuView _mainMenuView;
-
         public override void InstallBindings()
         {
-            BindView();
-            BindPresenter();
+            BindStateMachine();
+            BindUIFactory();
+            BindBootstraper();
+            BindUILevelPanelsFactory();
+            BindLevelPanelsStorage();
         }
 
-        private void BindPresenter()
+        private void BindLevelPanelsStorage()
         {
-            Container
-                .BindInterfacesTo<MainMenuPresenter>()
-                .AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelPanelsStorage>().AsSingle();
         }
 
-        private void BindView()
+        private void BindUILevelPanelsFactory()
         {
-            Container
-            .Bind<MainMenuView>()
-                .FromInstance(_mainMenuView)
-                .AsSingle();
+            Container.Bind<UILevelPanelsFactory>().AsSingle();
+        }
+
+        private void BindBootstraper()
+        {
+            Container.BindInterfacesAndSelfTo<MainMenuBootstraper>().AsSingle().NonLazy();
+        }
+
+        private void BindStateMachine()
+        {
+            MainMenuStateMachineInstaller.Install(Container);
+        }
+
+        private void BindUIFactory()
+        {
+            Container.Bind<MainMenuUIFactory>().AsSingle();
         }
 
     }

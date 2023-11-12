@@ -4,12 +4,12 @@ namespace CobeBase.Infrastructure.States
 {
     public class StatesFactory
     {
-        private IInstantiator instantiator;
+        private IInstantiator _instantiator;
 
         public StatesFactory(IInstantiator instantiator) =>
-            this.instantiator = instantiator;
+            _instantiator = instantiator;
 
         public TState Create<TState>() where TState : IState =>
-            instantiator.Instantiate<TState>();
+            _instantiator.Instantiate<TState>();
     }
 }

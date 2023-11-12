@@ -23,7 +23,7 @@ namespace CobeBase.Infrastructure.States
         public async UniTask Enter()
         {
             _loadingView.Show();
-            await _sceneLoader.Load("LevelScene");
+            await _sceneLoader.LoadLevelScene();
 
             _view = Object.FindObjectOfType<LevelView>();
             _view.MainMenu += Play;
