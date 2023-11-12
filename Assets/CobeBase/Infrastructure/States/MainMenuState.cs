@@ -16,10 +16,20 @@ namespace CobeBase.Infrastructure.States
             _sceneLoader = sceneLoader;
             _loadingView = loadingView;
         }
-        public async UniTask Enter()
+        public void Enter()
         {
             _loadingView.Show();
+            LoadNextScene().Forget();
+        }
+
+        private async UniTask LoadNextScene()
+        {
             await _sceneLoader.LoadMainMenuScene();
+            NextAction();
+        }
+
+        private void NextAction()
+        {
             _loadingView.Hide();
         }
 

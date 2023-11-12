@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using CobeBase.Data.StaticData;
+using CobeBase.UI.MainMenu;
+using UnityEngine;
 
 namespace Assets.CobeBase.UI.Services
 {
@@ -15,10 +17,10 @@ namespace Assets.CobeBase.UI.Services
             _selectedPanel = selectedPanel;
         }
 
-        //private void UpdateSelectedLevel(GameObject selectedPanel)
-        //{
-        //    LevelType selectedLevel = selectedPanel.GetComponent<LevelPanelPresenter>().PanelLevelType;
-        //    _mainMenuPresenter.SelectedLevel = selectedLevel;
-        //}
+        private LevelType Convert(GameObject selectedPanel)
+        {
+            LevelType selectedLevel = selectedPanel.GetComponent<LevelPanelPresenter>().PanelLevelType;
+            return selectedLevel;
+        }
     }
 }

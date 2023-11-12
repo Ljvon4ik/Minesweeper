@@ -4,7 +4,7 @@ namespace CobeBase.Infrastructure.States
 {
     public interface IState
     {
-        public UniTask Enter();
+        public void Enter();
         public void Exit();
     }
 }

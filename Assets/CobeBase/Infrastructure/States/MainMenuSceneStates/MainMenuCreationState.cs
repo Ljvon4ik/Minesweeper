@@ -10,7 +10,7 @@ namespace CobeBase.Infrastructure.States.MainMenuSceneStates
         {
             _factory = mainMenuUIFactory;
         }
-        public async UniTask Enter()
+        public void Enter()
         {
             _factory.CreateMainMenu();
         }

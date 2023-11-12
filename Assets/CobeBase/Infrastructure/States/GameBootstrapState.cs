@@ -1,5 +1,4 @@
 ﻿using CobeBase.UI;
-using Cysharp.Threading.Tasks;
 using CobeBase.Infrastructure.SceneManagement;
 using CobeBase.Services.LogService;
 
@@ -23,17 +22,12 @@ namespace CobeBase.Infrastructure.States
             _logService = logService;
         }
 
-        public async UniTask Enter()
+        public void Enter()
         {
             _loadingView.Show();
-            await InitServices();
             _gameStateMachine.Enter<MainMenuState>();
         }
 
-        private async UniTask InitServices()
-        {
-            _logService.Log("Init Services");
-        }
 
         public void Exit()
         {

@@ -10,7 +10,7 @@ namespace CobeBase.Infrastructure.States.MainMenuSceneStates
             _gameStateMachine = gameStateMachine;        
         }
 
-        public async UniTask Enter()
+        public void Enter()
         {
             _gameStateMachine.Enter<LevelState>();
         }
