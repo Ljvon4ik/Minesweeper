@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CobeBase.UI.MainMenu
 {
-    public class LevelPanelPresenter : MonoBehaviour
+    public class LevelPanelView : MonoBehaviour
     {
         public LevelType PanelLevelType { get; private set; }
 

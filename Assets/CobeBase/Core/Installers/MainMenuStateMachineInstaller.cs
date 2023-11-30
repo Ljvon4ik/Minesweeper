@@ -9,7 +9,6 @@ namespace CobeBase.Core.Installers
         public override void InstallBindings()
         {
             Container.Bind<StatesFactory>().AsSingle();
-
             Container.Bind<MainMenuStateMachine>().AsSingle();
         }
     }

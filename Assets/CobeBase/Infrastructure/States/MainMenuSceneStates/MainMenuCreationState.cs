@@ -1,12 +1,11 @@
 ﻿using CobeBase.UI.Factory;
-using Cysharp.Threading.Tasks;
 
 namespace CobeBase.Infrastructure.States.MainMenuSceneStates
 {
     public class MainMenuCreationState : IState
     {
-        private MainMenuUIFactory _factory;
-        public MainMenuCreationState(MainMenuUIFactory mainMenuUIFactory)
+        private IMainMenuFactory _factory;
+        public MainMenuCreationState(IMainMenuFactory mainMenuUIFactory)
         {
             _factory = mainMenuUIFactory;
         }

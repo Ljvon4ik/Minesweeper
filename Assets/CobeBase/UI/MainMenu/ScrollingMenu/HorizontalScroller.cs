@@ -1,5 +1,6 @@
 ﻿using Assets.CobeBase.UI.Services;
 using System;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,11 +9,11 @@ using UnityEngine.UI;
 namespace CobeBase.UI.MainMenu.ScrollingMenu
 {
     [RequireComponent(typeof(ScrollRect))]
-    public class HorizontalScroller : MonoBehaviour, IEndDragHandler, IBeginDragHandler
+    public class HorizontalScroller : MonoBehaviour, IScrollableMenu, IEndDragHandler, IBeginDragHandler
     {
-        [Range(1f, 60f)]
+        [Range(1f, 300f)]
         [SerializeField]
-        private float _panOffset = 40f;
+        private float _panOffset;
 
         [Range(5f, 20f)]
         [SerializeField]
@@ -28,12 +29,12 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
 
         private ScrollRect _scrollRect;
         private RectTransform _contentRect;
-        private GameObject[] _panels;
+        private List<LevelPanelView> _panels;
         private Vector2[] _panelsPos;
 
         private CompositeDisposable _disposables = new();
         private IntReactiveProperty _selectedPanelID = new();
-        private ReactiveProperty<GameObject> SelectedPanel = new();
+        public ReactiveProperty<LevelPanelView> SelectedPanel { get; private set; } = new();
 
         private bool _isDragging;
         private Vector2 _contentVector;
@@ -46,14 +47,9 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
         public void Init(ILevelPanelsStorage levelPanelsStorage)
         {
             _levelPanelsStorage = levelPanelsStorage;
-        }
-
-        private void Start()
-        {
             _scrollRect = GetComponent<ScrollRect>();
             _contentRect = _scrollRect.content.GetComponent<RectTransform>();
             _scrollRect.inertia = false;
-
             InitializePanelsArray();
             MovePanelsToDefaultPositions();
             InitializePanelsPosArray();
@@ -69,12 +65,6 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
 
                 _nextButton.OnClickAsObservable().Subscribe(_ => MoveToNextPanel()).AddTo(_disposables);
 
-                _selectedPanelID.Subscribe(_panelID =>
-                {
-                    SelectedPanel.Value = _panels[_panelID];
-                    _levelPanelsStorage?.UpdateSelectedPanel(SelectedPanel.Value);
-                    }).AddTo(_disposables);
-
                 _selectedPanelID.Where(x => x == _minValuePanelID)
                 .Subscribe(_ => _previousButton.interactable = false).AddTo(_disposables);
 
@@ -88,6 +78,7 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
                 .Subscribe(_ => _nextButton.interactable = true).AddTo(_disposables);
             }
 
+            _selectedPanelID.Subscribe(_panelID => SelectedPanel.Value = _panels[_panelID]).AddTo(_disposables);
         }
 
         private void InitializeLimitsValuesPanelID()
@@ -110,7 +101,7 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
 
         private void FixedUpdate()
         {
-            if(!_isDragging)
+            if (!_isDragging)
             {
                 _contentVector.x = Mathf.SmoothStep(_contentRect.anchoredPosition.x, _panelsPos[_selectedPanelID.Value].x, _snapSpeed * Time.fixedDeltaTime);
                 _contentRect.anchoredPosition = _contentVector;
@@ -119,7 +110,7 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
 
         private void InitializePanelsPosArray()
         {
-            int lenght = _panels.Length;
+            int lenght = _panels.Count;
             _panelsPos = new Vector2[lenght];
 
             for (int i = 0; i < lenght; i++)
@@ -131,7 +122,7 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
 
         private void MovePanelsToDefaultPositions()
         {
-            for (int i = 0; i < _panels.Length; i++)
+            for (int i = 0; i < _panels.Count; i++)
             {
                 if (i == 0) continue;
 
@@ -139,7 +130,7 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
                     + _panels[i - 1].GetComponent<RectTransform>().sizeDelta.x
                     + _panOffset;
                 float yPos = _panels[i].transform.localPosition.y;
-                Vector2 pos = new Vector2(xPos, yPos);
+                Vector2 pos = new(xPos, yPos);
 
                 _panels[i].transform.localPosition = pos;
             }
@@ -147,14 +138,7 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
 
         private void InitializePanelsArray()
         {
-            var childCount = _scrollRect.content.childCount;
-
-            _panels = new GameObject[childCount];
-
-            for (int i = 0; i < childCount; i++)
-            {
-                _panels[i] = _scrollRect.content.transform.GetChild(i).gameObject;
-            }
+            _panels = _levelPanelsStorage.GetPanels();
         }
 
         public void OnEndDrag(PointerEventData eventData)

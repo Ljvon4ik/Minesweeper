@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using CobeBase.UI.MainMenu;
+using System.Collections.Generic;
 
 namespace Assets.CobeBase.UI.Services
 {
     public interface ILevelPanelsStorage
     {
-        void UpdateSelectedPanel(GameObject selectedPanel);
-        GameObject SelectedPanel();
+        void AddPanel(LevelPanelView panelView);
+        List<LevelPanelView> GetPanels();
+        void CleanUp();
     }
 }

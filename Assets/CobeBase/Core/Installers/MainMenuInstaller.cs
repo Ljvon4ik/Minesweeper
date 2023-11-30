@@ -1,6 +1,8 @@
 ﻿using Assets.CobeBase.UI.Services;
 using CobeBase.Infrastructure.States.MainMenuSceneStates;
+using CobeBase.Services.LogService;
 using CobeBase.UI.Factory;
+using CobeBase.UI.MainMenu.ScrollingMenu;
 using System;
 using Zenject;
 
@@ -24,7 +26,7 @@ namespace CobeBase.Core.Installers
 
         private void BindUILevelPanelsFactory()
         {
-            Container.Bind<UILevelPanelsFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UILevelPanelsFactory>().AsSingle();
         }
 
         private void BindBootstraper()
@@ -39,7 +41,7 @@ namespace CobeBase.Core.Installers
 
         private void BindUIFactory()
         {
-            Container.Bind<MainMenuUIFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MainMenuUIFactory>().AsSingle();
         }
 
     }

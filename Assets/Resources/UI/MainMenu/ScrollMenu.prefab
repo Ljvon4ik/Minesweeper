@@ -40,7 +40,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 265, y: 300}
+  m_SizeDelta: {x: 950, y: 1050}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4234199964642881149
 CanvasRenderer:
@@ -122,13 +122,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b2aae8ce6298a54cb9867d33a3b8a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panOffset: 40
+  _panOffset: 300
   _snapSpeed: 10
   _previousButton: {fileID: 4205981650458268967}
   _nextButton: {fileID: 3672545501721666633}
-  _content: {fileID: 6733916990250754420}
-  SelectedPanel:
-    value: {fileID: 0}
 --- !u!1 &552893432731281901
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,7 +435,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 25, y: 50}
+  m_SizeDelta: {x: 50, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6468005191653328709
 CanvasRenderer:
@@ -554,8 +551,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 265, y: 300}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0.000061035156}
+  m_SizeDelta: {x: 950, y: 1050}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7427379251405084463
 GameObject:
@@ -670,7 +667,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -30, y: 0}
-  m_SizeDelta: {x: 25, y: 50}
+  m_SizeDelta: {x: 50, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1441221747332657370
 CanvasRenderer:

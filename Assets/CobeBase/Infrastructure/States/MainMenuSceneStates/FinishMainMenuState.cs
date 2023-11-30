@@ -1,6 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-
-namespace CobeBase.Infrastructure.States.MainMenuSceneStates
+﻿namespace CobeBase.Infrastructure.States.MainMenuSceneStates
 {
     public class FinishMainMenuState : IState
     {

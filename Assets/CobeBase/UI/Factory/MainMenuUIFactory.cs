@@ -5,30 +5,34 @@ using UnityEngine;
 using Assets.CobeBase.UI.Services;
 using CobeBase.UI.MainMenu.ScrollingMenu;
 using UnityEngine.UI;
+using CobeBase.UI.MainMenu;
+using CobeBase.Services.DynamicDataStorage;
 
 namespace CobeBase.UI.Factory
 {
-    public class MainMenuUIFactory
+    public class MainMenuUIFactory : IMainMenuFactory
     {
         private AssetProvider _assetProvider;
-        private UILevelPanelsFactory _levelPanelsFactory;
+        private IUILevelPanelsFactory _levelPanelsFactory;
         private MainMenuStateMachine _mainMenuStateMachine;
         private MainMenuPresenter _mainMenuPresenter;
-        private HorizontalScroller _horizontalScroller;
         private LevelsDatabase _levelsDatabase;
         private ILevelPanelsStorage _levelsPanelsStorage;
-
+        private IDynamicDataStorage _dynamicDataStorage;
+        private HorizontalScroller _scrollableMenu;
         public MainMenuUIFactory(AssetProvider assetProveder,
-            UILevelPanelsFactory uILevelPanelsFactory,
+            IUILevelPanelsFactory uILevelPanelsFactory,
             MainMenuStateMachine mainMenuStateMachine,
             LevelsDatabase levelsDatabase,
-            ILevelPanelsStorage levelPanelsStorage)
+            ILevelPanelsStorage levelPanelsStorage,
+            IDynamicDataStorage dynamicDataStorage)
         {
             _assetProvider = assetProveder;
             _levelPanelsFactory = uILevelPanelsFactory;
             _mainMenuStateMachine = mainMenuStateMachine;
             _levelsDatabase = levelsDatabase;
             _levelsPanelsStorage = levelPanelsStorage;
+            _dynamicDataStorage = dynamicDataStorage;
         }
 
         public void CreateMainMenu()
@@ -36,25 +40,32 @@ namespace CobeBase.UI.Factory
             CreateUIRoot();
             CreateScrollView();
             CreateLevelPanels();
+            InitCreatedObjects();
+        }
+
+        private void InitCreatedObjects()
+        {
+            _mainMenuPresenter.Init(_mainMenuStateMachine, _scrollableMenu, _dynamicDataStorage);
+            _scrollableMenu.Init(_levelsPanelsStorage);
         }
 
         private void CreateScrollView()
         {
             string path = AssetPath.ScrollMenuPrefab;
             Transform parent = _mainMenuPresenter.transform;
-            _horizontalScroller = _assetProvider.Instantiate<HorizontalScroller>(path, parent);
-            _horizontalScroller.Init(_levelsPanelsStorage);
+            _scrollableMenu = _assetProvider.Instantiate<HorizontalScroller>(path, parent);
         }
 
         private void CreateLevelPanels()
         {
             int numberOfLevels = _levelsDatabase.NumberOfLevels();
-            Transform parent = _horizontalScroller.gameObject.GetComponent<ScrollRect>().content.transform;
+            Transform parent = _scrollableMenu.gameObject.GetComponent<ScrollRect>().content.transform;
 
             for (int i = 0; i < numberOfLevels; i++)
             {
                 LevelType levelType = (LevelType)i;
-                _levelPanelsFactory.CreateLevelPanel(levelType, parent);
+                LevelPanelView panel = _levelPanelsFactory.CreateLevelPanel(levelType, parent);
+                _levelsPanelsStorage.AddPanel(panel);
             }
         }
 
@@ -62,7 +73,6 @@ namespace CobeBase.UI.Factory
         {
             string path = AssetPath.UIRoot;
             _mainMenuPresenter = _assetProvider.Instantiate<MainMenuPresenter>(path);
-            _mainMenuPresenter.Init(_mainMenuStateMachine);
         }
     }
 }

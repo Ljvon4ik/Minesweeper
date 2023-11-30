@@ -1,26 +1,28 @@
-﻿using CobeBase.Data.StaticData;
-using CobeBase.UI.MainMenu;
-using UnityEngine;
+﻿using CobeBase.UI.MainMenu;
+using System.Collections.Generic;
 
 namespace Assets.CobeBase.UI.Services
 {
     public class LevelPanelsStorage : ILevelPanelsStorage
     {
-        private GameObject _selectedPanel;
-        public GameObject SelectedPanel()
+        private List<LevelPanelView> _panels = new();
+
+        public void AddPanel(LevelPanelView panelView)
         {
-            return _selectedPanel;
+            if(_panels.Contains(panelView))
+                return;
+
+            _panels.Add(panelView);
         }
 
-        public void UpdateSelectedPanel(GameObject selectedPanel)
+        public List<LevelPanelView> GetPanels()
         {
-            _selectedPanel = selectedPanel;
+            return _panels;
         }
 
-        private LevelType Convert(GameObject selectedPanel)
+        public void CleanUp()
         {
-            LevelType selectedLevel = selectedPanel.GetComponent<LevelPanelPresenter>().PanelLevelType;
-            return selectedLevel;
+            _panels.Clear();
         }
     }
 }

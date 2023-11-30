@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CobeBase.UI.Factory
 {
-    public class UILevelPanelsFactory
+    public class UILevelPanelsFactory : IUILevelPanelsFactory
     {
         private LevelsDatabase _levelsDatabase;
         private AssetProvider _assetProvider;
@@ -15,10 +15,10 @@ namespace CobeBase.UI.Factory
             _assetProvider = assetProvider;
         }
 
-        public LevelPanelPresenter CreateLevelPanel(LevelType levelType, Transform parent)
+        public LevelPanelView CreateLevelPanel(LevelType levelType, Transform parent)
         {
             string path = AssetPath.UILevelPanelPrefab;
-            LevelPanelPresenter levelPanelPresenter = _assetProvider.Instantiate<LevelPanelPresenter>(path, parent);
+            LevelPanelView levelPanelPresenter = _assetProvider.Instantiate<LevelPanelView>(path, parent);
 
             LevelConfiguration levelConfiguration = _levelsDatabase.GetInfo(levelType);
             string name = levelConfiguration.LevelName;

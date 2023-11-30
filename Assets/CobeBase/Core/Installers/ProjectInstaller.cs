@@ -1,8 +1,10 @@
 ﻿using CobeBase.Data.StaticData;
 using CobeBase.Infrastructure.AssetManagement;
 using CobeBase.Infrastructure.SceneManagement;
+using CobeBase.Services.DynamicDataStorage;
 using CobeBase.Services.LogService;
 using CobeBase.UI;
+using System;
 using Zenject;
 
 namespace CobeBase.Core.Installers
@@ -17,6 +19,12 @@ namespace CobeBase.Core.Installers
             BindSceneLoader();
             BindLoadingView();
             BindLevelsDatabase();
+            BindDynamicDataStorage();
+        }
+
+        private void BindDynamicDataStorage()
+        {
+            Container.BindInterfacesAndSelfTo<DynamicDataStorage>().AsSingle();
         }
 
         private void BindLevelsDatabase()
