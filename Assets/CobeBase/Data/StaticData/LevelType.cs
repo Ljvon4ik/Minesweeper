@@ -4,7 +4,8 @@ namespace CobeBase.Data.StaticData
     {
         Easy = 0,
         Medium = 1,
-        Hard = 2
+        Hard = 2,
+        Special = 3
     }
 }
 

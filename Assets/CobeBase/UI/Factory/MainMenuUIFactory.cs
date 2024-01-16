@@ -12,7 +12,6 @@ namespace CobeBase.UI.Factory
 {
     public class MainMenuUIFactory : IMainMenuFactory
     {
-        private AssetProvider _assetProvider;
         private IUILevelPanelsFactory _levelPanelsFactory;
         private MainMenuStateMachine _mainMenuStateMachine;
         private MainMenuPresenter _mainMenuPresenter;
@@ -20,14 +19,13 @@ namespace CobeBase.UI.Factory
         private ILevelPanelsStorage _levelsPanelsStorage;
         private IDynamicDataStorage _dynamicDataStorage;
         private HorizontalScroller _scrollableMenu;
-        public MainMenuUIFactory(AssetProvider assetProveder,
+        public MainMenuUIFactory(
             IUILevelPanelsFactory uILevelPanelsFactory,
             MainMenuStateMachine mainMenuStateMachine,
             LevelsDatabase levelsDatabase,
             ILevelPanelsStorage levelPanelsStorage,
             IDynamicDataStorage dynamicDataStorage)
         {
-            _assetProvider = assetProveder;
             _levelPanelsFactory = uILevelPanelsFactory;
             _mainMenuStateMachine = mainMenuStateMachine;
             _levelsDatabase = levelsDatabase;
@@ -53,7 +51,7 @@ namespace CobeBase.UI.Factory
         {
             string path = AssetPath.ScrollMenuPrefab;
             Transform parent = _mainMenuPresenter.transform;
-            _scrollableMenu = _assetProvider.Instantiate<HorizontalScroller>(path, parent);
+            _scrollableMenu = AssetProvider.Instantiate<HorizontalScroller>(path, parent);
         }
 
         private void CreateLevelPanels()
@@ -72,7 +70,7 @@ namespace CobeBase.UI.Factory
         private void CreateUIRoot()
         {
             string path = AssetPath.UIRoot;
-            _mainMenuPresenter = _assetProvider.Instantiate<MainMenuPresenter>(path);
+            _mainMenuPresenter = AssetProvider.Instantiate<MainMenuPresenter>(path);
         }
     }
 }

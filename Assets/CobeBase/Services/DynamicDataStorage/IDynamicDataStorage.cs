@@ -4,7 +4,7 @@ namespace CobeBase.Services.DynamicDataStorage
 {
     public interface IDynamicDataStorage
     {
-        public LevelType CurrentLevel { get; }
+        public LevelType CurrentLevelType { get; }
         void UpdateCurrentLevel(LevelType levelType);
     }
 }

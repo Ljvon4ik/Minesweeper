@@ -6,17 +6,11 @@ namespace CobeBase.Gameplay.Factories
 {
     public class GameTileContentFactory
     {
-        private readonly AssetProvider _assetProvider;
         private readonly string EmptyTile = AssetPath.EmptyTile;
         private readonly string BombTile = AssetPath.BombTile;
         private readonly string FlagTile = AssetPath.FlagTile;
         private readonly string BombIndicatorTile = AssetPath.BombIndicatorTile;
         private readonly string ClosedTile = AssetPath.ClosedTile;
-
-        public GameTileContentFactory(AssetProvider assetProvider)
-        {
-            _assetProvider = assetProvider;
-        }
 
         public GameTileContent Get(GameTileContentType type, GameTile gameTile)
         {
@@ -24,11 +18,11 @@ namespace CobeBase.Gameplay.Factories
             Transform parent = gameTile.transform;
             return type switch
             {
-                GameTileContentType.Empty => _assetProvider.Instantiate<GameTileContent>(EmptyTile, pos, parent),
-                GameTileContentType.Bomb => _assetProvider.Instantiate<GameTileContent>(BombTile, pos, parent),
-                GameTileContentType.Flag => _assetProvider.Instantiate<GameTileContent>(FlagTile, pos, parent),
-                GameTileContentType.BombIndicator => _assetProvider.Instantiate<GameTileContent>(BombIndicatorTile, pos, parent),
-                GameTileContentType.Closed => _assetProvider.Instantiate<GameTileContent>(ClosedTile, pos, parent),
+                GameTileContentType.Empty => AssetProvider.Instantiate<GameTileContent>(EmptyTile, pos, parent),
+                GameTileContentType.Bomb => AssetProvider.Instantiate<GameTileContent>(BombTile, pos, parent),
+                GameTileContentType.Flag => AssetProvider.Instantiate<GameTileContent>(FlagTile, pos, parent),
+                GameTileContentType.BombIndicator => AssetProvider.Instantiate<GameTileContent>(BombIndicatorTile, pos, parent),
+                GameTileContentType.Closed => AssetProvider.Instantiate<GameTileContent>(ClosedTile, pos, parent),
                 _ => null,
             };
         }

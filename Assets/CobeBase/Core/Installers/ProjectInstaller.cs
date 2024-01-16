@@ -15,7 +15,6 @@ namespace CobeBase.Core.Installers
         {
             BindLogService();
             BindGameStateMachine();
-            BindAssetProvider();
             BindSceneLoader();
             BindLoadingView();
             BindLevelsDatabase();
@@ -35,11 +34,6 @@ namespace CobeBase.Core.Installers
         private void BindSceneLoader()
         {
             Container.Bind<SceneLoader>().AsSingle();
-        }
-
-        private void BindAssetProvider()
-        {
-            Container.Bind<AssetProvider>().AsSingle();
         }
 
         private void BindGameStateMachine()

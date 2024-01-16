@@ -7,9 +7,9 @@ namespace CobeBase.Data.StaticData
     public class LevelConfiguration : ScriptableObject
     {
         public LevelType Type;
-        [SerializeField] private byte _widthBoard;
-        [SerializeField] private byte _heightBoard;
-        [SerializeField] private byte _bombsCount;
+        [SerializeField] protected byte _widthBoard;
+        [SerializeField] protected byte _heightBoard;
+        [SerializeField] protected byte _bombsCount;
 
         public string LevelName => Enum.GetName(typeof(LevelType), Type);
         public byte BombsCount => _bombsCount;

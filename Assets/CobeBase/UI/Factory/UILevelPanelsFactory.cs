@@ -8,17 +8,15 @@ namespace CobeBase.UI.Factory
     public class UILevelPanelsFactory : IUILevelPanelsFactory
     {
         private LevelsDatabase _levelsDatabase;
-        private AssetProvider _assetProvider;
-        public UILevelPanelsFactory(LevelsDatabase levelsDatabase, AssetProvider assetProvider)
+        public UILevelPanelsFactory(LevelsDatabase levelsDatabase)
         {
             _levelsDatabase = levelsDatabase;
-            _assetProvider = assetProvider;
         }
 
         public LevelPanelView CreateLevelPanel(LevelType levelType, Transform parent)
         {
             string path = AssetPath.UILevelPanelPrefab;
-            LevelPanelView levelPanelPresenter = _assetProvider.Instantiate<LevelPanelView>(path, parent);
+            LevelPanelView levelPanelPresenter = AssetProvider.Instantiate<LevelPanelView>(path, parent);
 
             LevelConfiguration levelConfiguration = _levelsDatabase.GetInfo(levelType);
             string name = levelConfiguration.LevelName;

@@ -1,13 +1,13 @@
-﻿using CobeBase.Gameplay.Factories;
+﻿using CobeBase.Gameplay.Board;
 using CobeBase.Infrastructure.States.LevelSceneStates;
+using CobeBase.Services.CurrentLevelProvider;
 using CobeBase.Services.InputServices;
-using System;
 using UnityEngine;
 using Zenject;
 
 namespace CobeBase.Core.Installers
 {
-    public class LevelInstaller : MonoInstaller
+    public partial class LevelInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
@@ -15,12 +15,20 @@ namespace CobeBase.Core.Installers
             BindBootstraper();
             BindInputService();
             BindCamera();
-            BindGameTileContentFactory();
+            BindCurrentLevelProvider();
+            BindGameBoard();
         }
 
-        private void BindGameTileContentFactory()
+        private void BindCurrentLevelProvider()
         {
-            Container.Bind<GameTileContentFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<CurrentLevelProvider>().AsSingle();
+        }
+
+        private void BindGameBoard()
+        {
+            Container.Bind<GameBoard>().FromSubContainerResolve()
+                .ByInstaller<GameBoardInstaller>()
+                .AsSingle();
         }
 
         private void BindCamera()

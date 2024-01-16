@@ -28,6 +28,8 @@ namespace CobeBase.Gameplay.Tiles
             get => _isOpened;
             set
             {
+                _isOpened = value;
+
                 if (value == true)
                 {
                     if (this.Type == GameTileType.Empty)
