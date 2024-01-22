@@ -9,64 +9,81 @@ namespace CobeBase.Gameplay.Tiles
         public GameTileType Type { get; set; }
 
         private GameTileContentFactory _contentFactory;
-
         private GameTileContent _content;
-        private GameTileContent Content
-        {
-            set
-            {
-                if (_content != null)
-                    _content.Remove();
-
-                _content = value;
-            }
-        }
-
         private bool _isOpened;
+        private bool _isFlag;
+        private byte _adjacentBombCount;
+
         public bool IsOpened
         {
             get => _isOpened;
             set
             {
+                if (IsFlag)
+                    return;
+
                 _isOpened = value;
 
-                if (value == true)
+                if (value)
                 {
                     if (this.Type == GameTileType.Empty)
-                        Content = _contentFactory.Get(GameTileContentType.Empty, this);
+                        SetContent(_contentFactory.Get(GameTileContentType.Empty, this));
 
                     if (this.Type == GameTileType.Bomb)
-                        Content = _contentFactory.Get(GameTileContentType.Bomb, this);
+                        SetContent(_contentFactory.Get(GameTileContentType.Bomb, this));
 
                     if (this.Type == GameTileType.BombIndicator)
-                        Content = _contentFactory.Get(GameTileContentType.BombIndicator, this);
-
-                    if (this.Type == GameTileType.Flag)
-                        Content = _contentFactory.Get(GameTileContentType.Flag, this);
+                        SetContent(_contentFactory.Get(GameTileContentType.BombIndicator, this));
                 }
             }
         }
+        public bool IsFlag
+        {
+            get => _isFlag;
+            set 
+            {
+                if (IsOpened)
+                    return;
 
-        private byte _adjacentBombCount;
+                _isFlag = value;
+
+                if (value)
+                {
+                    SetContent(_contentFactory.Get(GameTileContentType.Flag, this));
+                }
+                else
+                {
+                    SetContent(_contentFactory.Get(GameTileContentType.Closed, this));
+                }
+            }
+        }
         public byte AdjacentBombCount
         {
             get => _adjacentBombCount;
             set
             {
                 if (value < 0 || value > 8)
-                    throw new Exception("Error: Cannot assign a value greater than 8 or less than 0. Please provide a valid value within the specified range.");
+                    throw new ArgumentException("Error: Cannot assign a value greater than 8 or less than 0. Please provide a valid value within the specified range.");
+                
+                _adjacentBombCount = value;
 
                 if (value > 0)
                     this.Type = GameTileType.BombIndicator;
-
-                _adjacentBombCount = value;
             }
         }
         public void Init(GameTileContentFactory contentFactory)
         {
             _contentFactory = contentFactory;
             this.Type = GameTileType.Empty;
-            Content = _contentFactory.Get(GameTileContentType.Closed, this);
+            SetContent(_contentFactory.Get(GameTileContentType.Closed, this));
         }
+        private void SetContent(GameTileContent content)
+        {
+            if (_content != null)
+                _content.Remove();
+
+            _content = content;
+        }
+
     }
 }

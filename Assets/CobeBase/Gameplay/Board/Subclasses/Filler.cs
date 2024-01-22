@@ -3,14 +3,10 @@ using CobeBase.Gameplay.Tiles;
 
 namespace CobeBase.Gameplay.Board
 {
-    public class Filler
+    public class Filler : InitializableBaseSubclass
     {
-        private AdjacentTilesFinder _adjacentTilesFinder;
-
-        public Filler(AdjacentTilesFinder adjacentTilesFinder)
-        {
-            _adjacentTilesFinder = adjacentTilesFinder;
-        }
+        public Filler(BoardGenerator boardGenerator)
+            : base(boardGenerator) { }
 
         public void FloodFill(GameTile tile)
         {
@@ -21,8 +17,9 @@ namespace CobeBase.Gameplay.Board
 
             if (tile.Type == GameTileType.Empty)
             {                
-                foreach (GameTile adjacentTiles in _adjacentTilesFinder.GetAdjacentTiles(tile))
-                    FloodFill(adjacentTiles);
+                foreach (GameTile adjacentTiles in AdjacentTilesFinder.GetAdjacentTiles(tile, _boardGenerator.TileMatrix))
+                    if (!adjacentTiles.IsOpened)
+                        FloodFill(adjacentTiles);
             }
         }
     }

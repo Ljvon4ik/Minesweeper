@@ -8,7 +8,7 @@ namespace CobeBase.Data.StaticData
     {
         [SerializeField] private LevelConfiguration[] _levels;
 
-        private Dictionary<LevelType, LevelConfiguration> _levelsCached = new Dictionary<LevelType, LevelConfiguration>();
+        private readonly Dictionary<LevelType, LevelConfiguration> _levelsCached = new Dictionary<LevelType, LevelConfiguration>();
 
         private void Init()
         {

@@ -4,7 +4,7 @@ namespace CobeBase.Infrastructure.States
 {
     public class StatesFactory
     {
-        private IInstantiator _instantiator;
+        private readonly IInstantiator _instantiator;
 
         public StatesFactory(IInstantiator instantiator) =>
             _instantiator = instantiator;

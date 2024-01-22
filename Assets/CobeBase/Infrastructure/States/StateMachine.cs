@@ -7,7 +7,7 @@ namespace CobeBase.Infrastructure.States
     {
         private readonly Dictionary<Type, IState> _states;
         private IState _activeState;
-        public StateMachine()
+        protected StateMachine()
         {
             _states = new Dictionary<Type, IState>();
         }

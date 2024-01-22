@@ -8,8 +8,8 @@ namespace CobeBase.Infrastructure.States.LevelSceneStates
 {
     public class LevelCreationState : IState
     {
-        private ICurrentLevelProvider _currentLevelProvider;
-        private GameBoard _gameBoard;
+        private readonly ICurrentLevelProvider _currentLevelProvider;
+        private readonly GameBoard _gameBoard;
 
         public LevelCreationState(ICurrentLevelProvider currentLevelProvider,
             GameBoard gameBoard)

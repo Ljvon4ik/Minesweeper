@@ -5,8 +5,8 @@ namespace CobeBase.Infrastructure.States.MainMenuSceneStates
 {
     public class MainMenuBootstraper : IInitializable
     {
-        private MainMenuStateMachine _mainMenuStateMachine;
-        private StatesFactory _statesFactory;
+        private readonly MainMenuStateMachine _mainMenuStateMachine;
+        private readonly StatesFactory _statesFactory;
 
         public MainMenuBootstraper(MainMenuStateMachine stateMachine, StatesFactory statesFactory)
         {

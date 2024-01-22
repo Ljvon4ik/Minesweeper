@@ -16,18 +16,16 @@ namespace CobeBase.UI
 
         private MainMenuStateMachine _stateMachine;
         private IDynamicDataStorage _dynamicDataStorage;
-        private IScrollableMenu _scrollableMenu;
 
         public void Init(MainMenuStateMachine stateMachine, 
             IScrollableMenu scrollableMenu, 
             IDynamicDataStorage dynamicDataStorage)
         {
             _stateMachine = stateMachine;
-            _scrollableMenu = scrollableMenu;
             _dynamicDataStorage = dynamicDataStorage;
 
-            _playButton?.OnClickAsObservable().Subscribe(_ => Play()).AddTo(this);
-            _scrollableMenu.SelectedPanel.Subscribe(panel => UpdateDynamicData(panel)).AddTo(this);
+            _playButton.OnClickAsObservable().Subscribe(_ => Play()).AddTo(this);
+            scrollableMenu.SelectedPanel.Subscribe(panel => UpdateDynamicData(panel)).AddTo(this);
         }
 
         private void UpdateDynamicData(LevelPanelView panel)

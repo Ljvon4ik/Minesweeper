@@ -2,7 +2,7 @@
 {
     public class FinishMainMenuState : IState
     {
-        private GameStateMachine _gameStateMachine;
+        private readonly GameStateMachine _gameStateMachine;
         public FinishMainMenuState(GameStateMachine gameStateMachine)
         {
             _gameStateMachine = gameStateMachine;        

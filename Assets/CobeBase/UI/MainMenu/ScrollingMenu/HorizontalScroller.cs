@@ -27,13 +27,12 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
         [Tooltip("Button to go to the next page. (optional)")]
         private Button _nextButton;
 
-        private ScrollRect _scrollRect;
         private RectTransform _contentRect;
         private List<LevelPanelView> _panels;
         private Vector2[] _panelsPos;
 
-        private CompositeDisposable _disposables = new();
-        private IntReactiveProperty _selectedPanelID = new();
+        private readonly CompositeDisposable _disposables = new();
+        private readonly IntReactiveProperty _selectedPanelID = new();
         public ReactiveProperty<LevelPanelView> SelectedPanel { get; private set; } = new();
 
         private bool _isDragging;
@@ -47,9 +46,9 @@ namespace CobeBase.UI.MainMenu.ScrollingMenu
         public void Init(ILevelPanelsStorage levelPanelsStorage)
         {
             _levelPanelsStorage = levelPanelsStorage;
-            _scrollRect = GetComponent<ScrollRect>();
-            _contentRect = _scrollRect.content.GetComponent<RectTransform>();
-            _scrollRect.inertia = false;
+            ScrollRect scrollRect = GetComponent<ScrollRect>();
+            _contentRect = scrollRect.content.GetComponent<RectTransform>();
+            scrollRect.inertia = false;
             InitializePanelsArray();
             MovePanelsToDefaultPositions();
             InitializePanelsPosArray();

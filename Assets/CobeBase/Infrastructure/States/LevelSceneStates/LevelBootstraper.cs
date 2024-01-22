@@ -4,8 +4,8 @@ namespace CobeBase.Infrastructure.States.LevelSceneStates
 {
     public class LevelBootstraper : IInitializable
     {
-        private LevelStateMachine _levelStateMachine;
-        private StatesFactory _statesFactory;
+        private readonly LevelStateMachine _levelStateMachine;
+        private readonly StatesFactory _statesFactory;
 
         public LevelBootstraper(LevelStateMachine stateMachine, StatesFactory statesFactory)
         {

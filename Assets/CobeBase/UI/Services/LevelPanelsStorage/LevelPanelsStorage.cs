@@ -5,7 +5,7 @@ namespace Assets.CobeBase.UI.Services
 {
     public class LevelPanelsStorage : ILevelPanelsStorage
     {
-        private List<LevelPanelView> _panels = new();
+        private readonly List<LevelPanelView> _panels = new();
 
         public void AddPanel(LevelPanelView panelView)
         {

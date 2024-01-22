@@ -1,0 +1,86 @@
+{
+    "name": "MyNewInput",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "be6afc23-6972-4100-81b6-a4ecb63c9b24",
+            "actions": [
+                {
+                    "name": "OneClick",
+                    "type": "Button",
+                    "id": "7c40b99e-21ab-4e87-99b2-23a4125840fc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Hold",
+                    "type": "Button",
+                    "id": "3517d49b-5266-4deb-b8b9-2237a351cef6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "DoubleClick",
+                    "type": "Button",
+                    "id": "03768bc0-8877-4612-9ca1-7c60aff11476",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3c7959ca-ecc2-4d86-8463-9b472de02831",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "OneClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfce6c06-cf5f-4f1b-a2db-24447094d63c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "Hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1e54a6b-c0ab-46ec-ba63-5548df5ad36f",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "MultiTap(tapTime=0.18,tapDelay=0.1,pressPoint=1.401298E-45)",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "DoubleClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Mouse",
+            "bindingGroup": "Mouse",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

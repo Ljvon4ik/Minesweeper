@@ -4,7 +4,7 @@ namespace CobeBase.Infrastructure.States.MainMenuSceneStates
 {
     public class MainMenuCreationState : IState
     {
-        private IMainMenuFactory _factory;
+        private readonly IMainMenuFactory _factory;
         public MainMenuCreationState(IMainMenuFactory mainMenuUIFactory)
         {
             _factory = mainMenuUIFactory;

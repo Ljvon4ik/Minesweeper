@@ -6,8 +6,8 @@ namespace CobeBase.Infrastructure.States
 {
     public class MainMenuState : IState
     {
-        private SceneLoader _sceneLoader;
-        private LoadingView _loadingView;
+        private readonly SceneLoader _sceneLoader;
+        private readonly LoadingView _loadingView;
 
         public MainMenuState(
             SceneLoader sceneLoader,

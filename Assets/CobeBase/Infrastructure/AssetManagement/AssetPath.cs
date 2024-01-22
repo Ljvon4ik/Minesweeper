@@ -1,6 +1,6 @@
 ﻿namespace CobeBase.Infrastructure.AssetManagement
 {
-    public class AssetPath
+    public static class AssetPath
     {
         public const string LoadingView = "LoadingView";
         public const string UIRoot = "UI/UIRootCanvas";

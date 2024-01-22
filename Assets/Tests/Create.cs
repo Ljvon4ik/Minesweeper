@@ -30,34 +30,36 @@ namespace Tests
             return bombInstaller;
         }
 
-        public static BombCluesInstaller BombCluesInstaller(BoardGenerator boardGenerator, LevelConfiguration levelConfiguration)
+        public static BombCluesInstaller BombCluesInstaller(BoardGenerator boardGenerator)
         {
-            BombCluesInstaller bombCluesInstaller = new(AdjacentTilesFinder(boardGenerator, levelConfiguration), boardGenerator);
+            BombCluesInstaller bombCluesInstaller = new(boardGenerator);
             return bombCluesInstaller;
         }
 
-        public static AdjacentTilesFinder AdjacentTilesFinder(BoardGenerator boardGenerator, LevelConfiguration levelConfiguration)
-        {
-            AdjacentTilesFinder adjacentTilesFinder = new(Setup.CurrentLevelProvider(levelConfiguration), boardGenerator);
-            return adjacentTilesFinder;
-        }
         public static LevelConfiguration LevelConfiguration(LevelType levelType = LevelType.Easy)
         {
             LevelsDatabase levelsDatabase = Create.LevelsDatabase();
             return levelsDatabase.GetInfo(levelType);
         }
 
-        public static LevelConfiguration SpecialLevelConfiguration(byte bombsCount, byte widthBoard, byte heightBoard)
+        public static LevelConfiguration SpecialLevelConfiguration(byte bombsCount = 1, byte widthBoard = 3, byte heightBoard = 6)
         {
             SpecialLevelConfiguration levelConfiguration = ScriptableObject.CreateInstance<SpecialLevelConfiguration>();
             levelConfiguration.SetConfig(bombsCount, widthBoard, heightBoard);
             return levelConfiguration;
         }
 
-        public static Filler Filler(BoardGenerator boardGenerator, LevelConfiguration levelConfiguration)
+        public static Filler Filler(BoardGenerator boardGenerator)
         {
-            Filler filler = new(AdjacentTilesFinder(boardGenerator, levelConfiguration));
+            Filler filler = new(boardGenerator);
             return filler;
+        }
+
+        public static AutoDigger AutoDigger(BoardGenerator boardGenerator)
+        {
+            Filler filler = Filler(boardGenerator);
+            AutoDigger digger = new(boardGenerator, filler);
+            return digger;
         }
     }
 }

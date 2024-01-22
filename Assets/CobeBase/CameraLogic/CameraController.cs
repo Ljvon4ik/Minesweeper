@@ -8,17 +8,15 @@ namespace CobeBase.CameraLogic
 
     public class CameraController : MonoBehaviour
     {
-        private float _offset = 0.5f; //tile center
+        private readonly float _offset = 0.5f; //tile center
 
-        private CameraMoveController _moveController;
-        private CameraZoomController _zoomController;
         public void Init(float width, float height)
         {
-            _moveController = GetComponent<CameraMoveController>();
-            _moveController.Init(GetCenter(width, height));
+            CameraMoveController moveController = GetComponent<CameraMoveController>();
+            moveController.Init(GetCenter(width, height));
 
-            _zoomController = GetComponent<CameraZoomController>();
-            _zoomController.Init(GetStartSize(width));
+            CameraZoomController zoomController = GetComponent<CameraZoomController>();
+            zoomController.Init(GetStartSize(width));
         }
 
         private float GetStartSize(float width)

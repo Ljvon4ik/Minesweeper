@@ -1,25 +1,19 @@
 ﻿using CobeBase.UI;
-using CobeBase.Infrastructure.SceneManagement;
 using CobeBase.Services.LogService;
 
 namespace CobeBase.Infrastructure.States
 {
     public class GameBootstrapState : IState
     {
-        private GameStateMachine _gameStateMachine;
-        private SceneLoader _sceneLoader;
-        private LoadingView _loadingView;
-        private ILogService _logService;
+        private readonly GameStateMachine _gameStateMachine;
+        private readonly LoadingView _loadingView;
 
         public GameBootstrapState(GameStateMachine gameStateMachine, 
-            SceneLoader sceneLoader, 
             LoadingView loadingView,
             ILogService logService)
         {
             _gameStateMachine = gameStateMachine;
-            _sceneLoader = sceneLoader;
             _loadingView = loadingView;
-            _logService = logService;
         }
 
         public void Enter()

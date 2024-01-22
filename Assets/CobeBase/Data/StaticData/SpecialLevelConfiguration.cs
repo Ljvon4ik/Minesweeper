@@ -4,7 +4,7 @@
     {
         public void SetConfig(byte bombsCount, byte widthBoard, byte heightBoard)
         {
-            Type = LevelType.Special;
+            LevelType = LevelType.Special;
             _bombsCount = bombsCount;
             _widthBoard = widthBoard;
             _heightBoard = heightBoard;

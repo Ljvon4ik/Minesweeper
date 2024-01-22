@@ -7,9 +7,9 @@ namespace CobeBase.Infrastructure.States
 {
     public class LevelState : IState
     {
-        private GameStateMachine _gameStateMachine;
-        private SceneLoader _sceneLoader;
-        private LoadingView _loadingView;
+        private readonly GameStateMachine _gameStateMachine;
+        private readonly SceneLoader _sceneLoader;
+        private readonly LoadingView _loadingView;
         private LevelView _view;
 
         public LevelState(GameStateMachine gameStateMachine,

@@ -7,7 +7,7 @@ namespace CobeBase.UI.Factory
 {
     public class UILevelPanelsFactory : IUILevelPanelsFactory
     {
-        private LevelsDatabase _levelsDatabase;
+        private readonly LevelsDatabase _levelsDatabase;
         public UILevelPanelsFactory(LevelsDatabase levelsDatabase)
         {
             _levelsDatabase = levelsDatabase;
@@ -24,7 +24,7 @@ namespace CobeBase.UI.Factory
             int height = levelConfiguration.HeightBoard;
             int bombs = levelConfiguration.BombsCount;
 
-            float time = default;// TODO
+            float time = default;
 
             levelPanelPresenter.Init(levelType, name, width, height, bombs, time);
             return levelPanelPresenter;

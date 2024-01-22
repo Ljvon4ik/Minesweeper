@@ -1,19 +1,39 @@
 ﻿using CobeBase.Gameplay.Tiles;
 using CobeBase.Services.InputServices;
+using System;
 
 namespace CobeBase.Gameplay.Board
 {
-    public class BoardInputHandler
+    public class BoardInputHandler : IDisposable
     {
-        private readonly IInputService _inputService;
         private readonly GameBoard _gameBoard;
         private bool _isFirstTileOpen;
+        private readonly IInputService _input;
 
-        public BoardInputHandler(IInputService inputService, GameBoard gameBoard)
+        public BoardInputHandler(IInputService input, GameBoard gameBoard)
         {
             _gameBoard = gameBoard;
-            _inputService = inputService;
-            _inputService.TileClicked += TileCliked;
+            _input = input;
+            _input.TileClicked += TileCliked;
+            _input.TileHeld += TileHeld;
+            _input.TileDoubleClicked += TileDoubleClicked;
+        }
+
+        private void TileDoubleClicked(GameTile tile)
+        {
+            _gameBoard.EasyDigging(tile);
+        }
+
+        private void TileHeld(GameTile tile)
+        {
+            if (tile.IsOpened)
+                return;
+
+            if (!_isFirstTileOpen)
+                return;
+
+            if (!tile.IsOpened)
+                _gameBoard.FlagTile(tile);
         }
 
         private void TileCliked(GameTile tile)
@@ -24,7 +44,6 @@ namespace CobeBase.Gameplay.Board
             if (!_isFirstTileOpen)
             {
                 _gameBoard.PlaceBombs(tile);
-                _gameBoard.PlaceClues();
                 _isFirstTileOpen = true;
             }
 
@@ -37,9 +56,11 @@ namespace CobeBase.Gameplay.Board
             tile.IsOpened = true;
         }
 
-        ~BoardInputHandler()
+        public void Dispose()
         {
-            _inputService.TileClicked -= TileCliked;
+            _input.TileClicked -= TileCliked;
+            _input.TileHeld -= TileHeld;
+            _input.TileDoubleClicked -= TileDoubleClicked;
         }
     }
 }

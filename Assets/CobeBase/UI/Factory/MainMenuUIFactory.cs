@@ -12,12 +12,12 @@ namespace CobeBase.UI.Factory
 {
     public class MainMenuUIFactory : IMainMenuFactory
     {
-        private IUILevelPanelsFactory _levelPanelsFactory;
-        private MainMenuStateMachine _mainMenuStateMachine;
+        private readonly IUILevelPanelsFactory _levelPanelsFactory;
+        private readonly MainMenuStateMachine _mainMenuStateMachine;
         private MainMenuPresenter _mainMenuPresenter;
-        private LevelsDatabase _levelsDatabase;
-        private ILevelPanelsStorage _levelsPanelsStorage;
-        private IDynamicDataStorage _dynamicDataStorage;
+        private readonly LevelsDatabase _levelsDatabase;
+        private readonly ILevelPanelsStorage _levelsPanelsStorage;
+        private readonly IDynamicDataStorage _dynamicDataStorage;
         private HorizontalScroller _scrollableMenu;
         public MainMenuUIFactory(
             IUILevelPanelsFactory uILevelPanelsFactory,

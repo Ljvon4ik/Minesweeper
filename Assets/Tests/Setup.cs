@@ -1,4 +1,5 @@
 ﻿using CobeBase.Data.StaticData;
+using CobeBase.Gameplay.Board;
 using CobeBase.Gameplay.Board.Subclasses;
 using CobeBase.Gameplay.Factories;
 using CobeBase.Gameplay.Tiles;
@@ -26,39 +27,62 @@ namespace Tests
             return currentLevelProvider;
         }
 
-        public static void SetTypeInAllTiles(GameTile[,] arrayOfTiles, GameTileType type)
+        public static void SetTypeInAllTiles(TileMatrix matrix, GameTileType type)
         {
-            for (int i = 0; i < arrayOfTiles.GetLength(0); i++)
+            for (int i = 0; i < matrix.GetRowsMatrixCount(); i++)
             {
-                for (int j = 0; j < arrayOfTiles.GetLength(1); j++)
+                for (int j = 0; j < matrix.GetColumnsMatrixCount(); j++)
                 {
-                    GameTile tile = arrayOfTiles[i, j];
+                    GameTile tile = matrix.GetTileMatrix()[i, j];
                     tile.Type = type;
                 }
             }
         }
 
-        public static GameTile RandomGameTile(GameTile[,] arrayOfTiles)
+        public static GameTile RandomGameTile(TileMatrix matrix)
         {
-            int xPos = Random.Range(0, arrayOfTiles.GetLength(0));
-            int yPos = Random.Range(0, arrayOfTiles.GetLength(1));
-            GameTile tile = arrayOfTiles[xPos, yPos];
+            int xPos = Random.Range(0, matrix.GetRowsMatrixCount());
+            int yPos = Random.Range(0, matrix.GetColumnsMatrixCount());
+            GameTile tile = matrix.GetTileMatrix()[xPos, yPos];
             return tile;
         }
 
-        public static GameTile CentralGameTile(GameTile[,] arrayOfTiles)
+        public static GameTile CentralGameTile(TileMatrix matrix)
         {
-            int rows = arrayOfTiles.GetLength(0);
-            int cols = arrayOfTiles.GetLength(1);
+            int rows = matrix.GetRowsMatrixCount();
+            int cols = matrix.GetColumnsMatrixCount();
             int centerRow = rows / 2;
             int centerCol = cols / 2;
 
-            return arrayOfTiles[centerRow, centerCol];
+            return matrix.GetTileMatrix()[centerRow, centerCol];
         }
 
-        public static GameTile ZeroGameTile(GameTile[,] arrayOfTiles)
+        public static GameTile ZeroGameTile(TileMatrix matrix)
         {
-            return arrayOfTiles[0, 0];
+            return matrix.GetTileMatrix()[0, 0];
         }
+
+        public static void SetFalagIsTrueAllTiles(TileMatrix matrix)
+        {
+            foreach (GameTile tile in matrix.GetTileMatrix())
+                tile.IsFlag = true;
+        }
+
+        public static GameTile GetAdjecentTile(GameTile tile, TileMatrix matrix)
+        {
+            int x = (int)tile.transform.position.x;
+            int y = (int)tile.transform.position.y;
+
+            GameTile right = matrix.GetTileMatrix()[x + 1, y];
+
+            if(right == null)
+            {
+                GameTile left = matrix.GetTileMatrix()[x - 1, y];
+                return left;
+            }
+
+            return right;
+        }
+
     }
 }

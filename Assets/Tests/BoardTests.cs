@@ -3,26 +3,46 @@ using CobeBase.Gameplay.Board;
 using CobeBase.Gameplay.Board.Subclasses;
 using CobeBase.Gameplay.Tiles;
 using NUnit.Framework;
+using System;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 namespace Tests
 {
     public class BoardTests
     {
         [Test]
-        public void WhenBoardGenerating_AndArrayOfTilesIsEmpty_ThenArrayOfTilesLengthIsEqualToHeightBoardMultipliedByWidthBoard()
+        public void WhenBoardGenerating_AndHeightAndWidthInLevelConfigurationAreNotEqual_ThenLengthOfArrayRowsInBoadrGenerationIsEqualToWidthOfLevelConfiguration()
         {
             // Arrange
-            LevelConfiguration levelConfiguration = Create.LevelConfiguration();
+            byte bombs = 0;
+            byte width = 3;
+            byte height = 6;
+            LevelConfiguration levelConfiguration = Create.SpecialLevelConfiguration(bombs, width, height);
             BoardGenerator boardGenerator = Setup.BoardGenerator(levelConfiguration);
-            int arrayLenght = levelConfiguration.WidthBoard * levelConfiguration.HeightBoard;
 
             // Act
             boardGenerator.GenerateBoard();
 
             // Assert
-            Assert.That(boardGenerator.ArrayOfTiles, Has.Length.EqualTo(arrayLenght));
+            Assert.AreEqual(boardGenerator.TileMatrix.GetRowsMatrixCount(), levelConfiguration.WidthBoard);
         }
 
+        [Test]
+        public void WhenBoardGenerating_AndHeightAndWidthInLevelConfigurationAreNotEqual_ThenLengthOfArrayColumnsInBoadrGenerationIsEqualToHeightOfLevelConfiguration()
+        {
+            // Arrange
+            byte bombs = 0;
+            byte width = 3;
+            byte height = 6;
+            LevelConfiguration levelConfiguration = Create.SpecialLevelConfiguration(bombs, width, height);
+            BoardGenerator boardGenerator = Setup.BoardGenerator(levelConfiguration);
+
+            // Act
+            boardGenerator.GenerateBoard();
+
+            // Assert
+            Assert.AreEqual(boardGenerator.TileMatrix.GetColumnsMatrixCount(), levelConfiguration.HeightBoard);
+        }
 
         [Test]
         public void WhenBombsPlacing_AndGenerateBoard_ThenBombTilesTypeCountIsEqualToLevelsConfigBombsCount()
@@ -33,18 +53,18 @@ namespace Tests
             BoardGenerator boardGenerator = Setup.BoardGenerator(levelConfiguration);
             BombInstaller bombInstaller = Create.BombInstaller(boardGenerator, levelConfiguration);
             boardGenerator.GenerateBoard();
-            GameTile firstClickedTile = Setup.RandomGameTile(boardGenerator.ArrayOfTiles);
+            GameTile firstClickedTile = Setup.RandomGameTile(boardGenerator.TileMatrix);
 
             // Act
             bombInstaller.PlaceBombs(firstClickedTile);
 
             // Assert
             byte bombsCountLevel = 0;
-            for (int i = 0; i < boardGenerator.ArrayOfTiles.GetLength(0); i++)
+            for (int i = 0; i < boardGenerator.TileMatrix.GetRowsMatrixCount(); i++)
             {
-                for (int j = 0; j < boardGenerator.ArrayOfTiles.GetLength(1); j++)
+                for (int j = 0; j < boardGenerator.TileMatrix.GetColumnsMatrixCount(); j++)
                 {
-                    GameTile tile = boardGenerator.ArrayOfTiles[i, j];
+                    GameTile tile = boardGenerator.TileMatrix.GetTileMatrix()[i, j];
                     if (tile.Type == bombType)
                     {
                         bombsCountLevel++;
@@ -65,16 +85,16 @@ namespace Tests
             LevelConfiguration levelConfiguration = Create.LevelConfiguration();
             BoardGenerator boardGenerator = Setup.BoardGenerator(levelConfiguration);
             BombInstaller bombInstaller = Create.BombInstaller(boardGenerator, levelConfiguration);
-            BombCluesInstaller bombCluesInstaller = Create.BombCluesInstaller(boardGenerator, levelConfiguration);
+            BombCluesInstaller bombCluesInstaller = Create.BombCluesInstaller(boardGenerator);
             boardGenerator.GenerateBoard();
-            GameTile firstClickedTile = Setup.RandomGameTile(boardGenerator.ArrayOfTiles);
+            GameTile firstClickedTile = Setup.RandomGameTile(boardGenerator.TileMatrix);
             bombInstaller.PlaceBombs(firstClickedTile);
 
             // Act
             bombCluesInstaller.SetBombClues();
 
             // Assert
-            Assert.That(DoesEachBombHaveClues(boardGenerator, levelConfiguration));
+            Assert.That(DoesEachBombHaveClues(boardGenerator.TileMatrix));
         }
 
 
@@ -85,15 +105,15 @@ namespace Tests
             LevelConfiguration levelConfiguration = Create.SpecialLevelConfiguration(0, 4, 4);
             BoardGenerator boardGenerator = Setup.BoardGenerator(levelConfiguration);
             boardGenerator.GenerateBoard();
-            Filler filler = Create.Filler(boardGenerator, levelConfiguration);
-            Setup.SetTypeInAllTiles(boardGenerator.ArrayOfTiles, GameTileType.Empty);
-            GameTile openableTile = Setup.CentralGameTile(boardGenerator.ArrayOfTiles);
+            Filler filler = Create.Filler(boardGenerator);
+            Setup.SetTypeInAllTiles(boardGenerator.TileMatrix, GameTileType.Empty);
+            GameTile openableTile = Setup.CentralGameTile(boardGenerator.TileMatrix);
 
             // Act
             filler.FloodFill(openableTile);
 
             // Assert
-            Assert.That(AreAllTilesOpen(boardGenerator));
+            Assert.That(AreAllTilesOpen(boardGenerator.TileMatrix));
         }
 
 
@@ -104,10 +124,10 @@ namespace Tests
             LevelConfiguration levelConfiguration = Create.SpecialLevelConfiguration(0, 3, 3);
             BoardGenerator boardGenerator = Setup.BoardGenerator(levelConfiguration);
             boardGenerator.GenerateBoard();
-            Filler filler = Create.Filler(boardGenerator, levelConfiguration);
-            Setup.SetTypeInAllTiles(boardGenerator.ArrayOfTiles, GameTileType.Empty);
-            GameTile openableTile = Setup.CentralGameTile(boardGenerator.ArrayOfTiles);
-            GameTile nonEmptyTile = Setup.ZeroGameTile(boardGenerator.ArrayOfTiles);
+            Filler filler = Create.Filler(boardGenerator);
+            Setup.SetTypeInAllTiles(boardGenerator.TileMatrix, GameTileType.Empty);
+            GameTile openableTile = Setup.CentralGameTile(boardGenerator.TileMatrix);
+            GameTile nonEmptyTile = Setup.ZeroGameTile(boardGenerator.TileMatrix);
             nonEmptyTile.Type = GameTileType.Bomb;
 
             // Act
@@ -125,10 +145,10 @@ namespace Tests
             LevelConfiguration levelConfiguration = Create.SpecialLevelConfiguration(0, 3, 3);
             BoardGenerator boardGenerator = Setup.BoardGenerator(levelConfiguration);
             boardGenerator.GenerateBoard();
-            Filler filler = Create.Filler(boardGenerator, levelConfiguration);
-            Setup.SetTypeInAllTiles(boardGenerator.ArrayOfTiles, GameTileType.Empty);
-            GameTile openableTile = Setup.CentralGameTile(boardGenerator.ArrayOfTiles);
-            GameTile nonEmptyTile = Setup.ZeroGameTile(boardGenerator.ArrayOfTiles);
+            Filler filler = Create.Filler(boardGenerator);
+            Setup.SetTypeInAllTiles(boardGenerator.TileMatrix, GameTileType.Empty);
+            GameTile openableTile = Setup.CentralGameTile(boardGenerator.TileMatrix);
+            GameTile nonEmptyTile = Setup.ZeroGameTile(boardGenerator.TileMatrix);
             nonEmptyTile.Type = GameTileType.BombIndicator;
 
             // Act
@@ -138,13 +158,42 @@ namespace Tests
             Assert.That(nonEmptyTile.IsOpened);
         }
 
-        private bool AreAllTilesOpen(BoardGenerator boardGenerator)
+        [Test]
+        public void WhenEasyDigging_AndAdjacentTileTypeIsEmpty_ThenAdjacentTilesOfEmptyTileAreOpen()
         {
-            for (int i = 0; i < boardGenerator.ArrayOfTiles.GetLength(0); i++)
+            // Arrange
+            LevelConfiguration levelConfiguration = Create.SpecialLevelConfiguration(0, 3, 3);
+            BoardGenerator boardGenerator = Setup.BoardGenerator(levelConfiguration);
+            AutoDigger digger = Create.AutoDigger(boardGenerator);
+            boardGenerator.GenerateBoard();
+            Setup.SetTypeInAllTiles(boardGenerator.TileMatrix, GameTileType.Empty);
+            GameTile tile = Setup.CentralGameTile(boardGenerator.TileMatrix);
+
+            // Act
+            digger.EasyDig(tile);
+
+            // Assert
+            Assert.That(AreAdjacentTilesOpen(tile, boardGenerator.TileMatrix));
+        }
+
+        private bool AreAdjacentTilesOpen(GameTile tile, TileMatrix tileMatrix)
+        {
+            foreach (GameTile adjacentTile in AdjacentTilesFinder.GetAdjacentTiles(tile, tileMatrix))
             {
-                for (int j = 0; j < boardGenerator.ArrayOfTiles.GetLength(1); j++)
+                if(!adjacentTile.IsOpened)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private bool AreAllTilesOpen(TileMatrix matrix)
+        {
+            for (int i = 0; i < matrix.GetRowsMatrixCount(); i++)
+            {
+                for (int j = 0; j < matrix.GetColumnsMatrixCount(); j++)
                 {
-                    GameTile tile = boardGenerator.ArrayOfTiles[i, j];
+                    GameTile tile = matrix.GetTileMatrix()[i, j];
 
                     if (tile.IsOpened == false)
                     {
@@ -156,21 +205,19 @@ namespace Tests
             return true;
         }
 
-        private bool DoesEachBombHaveClues(BoardGenerator boardGenerator, LevelConfiguration levelConfiguration)
+        private bool DoesEachBombHaveClues(TileMatrix matrix)
         {
             const GameTileType bombType = GameTileType.Bomb;
             const GameTileType bombIndicatorType = GameTileType.BombIndicator;
-            AdjacentTilesFinder adjacentTilesFinder = Create.AdjacentTilesFinder(boardGenerator, levelConfiguration);
-
-            for (int i = 0; i < boardGenerator.ArrayOfTiles.GetLength(0); i++)
+            for (int i = 0; i < matrix.GetRowsMatrixCount(); i++)
             {
-                for (int j = 0; j < boardGenerator.ArrayOfTiles.GetLength(1); j++)
+                for (int j = 0; j < matrix.GetColumnsMatrixCount(); j++)
                 {
-                    GameTile tile = boardGenerator.ArrayOfTiles[i, j];
+                    GameTile tile = matrix.GetTileMatrix()[i, j];
 
                     if (tile.Type == bombType)
                     {
-                        foreach (GameTile adjacentTile in adjacentTilesFinder.GetAdjacentTiles(tile))
+                        foreach (GameTile adjacentTile in AdjacentTilesFinder.GetAdjacentTiles(tile, matrix))
                         {
                             if (adjacentTile.Type != bombIndicatorType && adjacentTile.Type != bombType)
                                 return false;

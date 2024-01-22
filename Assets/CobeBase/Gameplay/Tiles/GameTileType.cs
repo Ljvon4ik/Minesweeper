@@ -4,7 +4,6 @@
     {
         Empty = 0,
         Bomb = 1,
-        Flag = 2,
-        BombIndicator = 3,
+        BombIndicator = 2,
     }
 }

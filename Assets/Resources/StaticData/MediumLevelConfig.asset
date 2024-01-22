@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b9219634a224648884102916040fb7, type: 3}
   m_Name: MediumLevelConfig
   m_EditorClassIdentifier: 
-  Type: 1
+  LevelType: 1
   _widthBoard: 16
   _heightBoard: 16
   _bombsCount: 40

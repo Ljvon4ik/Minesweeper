@@ -14,10 +14,11 @@ namespace CobeBase.Core.Installers
             Container.Bind<BoardGenerator>().FromComponentInNewPrefabResource(AssetPath.GameBoard).AsSingle();
             Container.Bind<BombInstaller>().AsSingle();
             Container.Bind<BombCluesInstaller>().AsSingle();
-            Container.Bind<AdjacentTilesFinder>().AsSingle();
             Container.Bind<Filler>().AsSingle();
             Container.Bind<GameTileContentFactory>().AsSingle();
-            Container.Bind<BoardInputHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<BoardInputHandler>().AsSingle().NonLazy();
+            Container.Bind<TileFlagManager>().AsSingle();
+            Container.Bind<AutoDigger>().AsSingle();
         }
     }
 }

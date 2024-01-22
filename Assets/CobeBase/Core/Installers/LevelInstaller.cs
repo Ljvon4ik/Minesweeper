@@ -2,6 +2,7 @@
 using CobeBase.Infrastructure.States.LevelSceneStates;
 using CobeBase.Services.CurrentLevelProvider;
 using CobeBase.Services.InputServices;
+using CodeBase.Input;
 using UnityEngine;
 using Zenject;
 
@@ -17,6 +18,12 @@ namespace CobeBase.Core.Installers
             BindCamera();
             BindCurrentLevelProvider();
             BindGameBoard();
+            BindInput();
+        }
+
+        private void BindInput()
+        {
+            Container.Bind<MyNewInput>().AsSingle();
         }
 
         private void BindCurrentLevelProvider()
@@ -26,9 +33,7 @@ namespace CobeBase.Core.Installers
 
         private void BindGameBoard()
         {
-            Container.Bind<GameBoard>().FromSubContainerResolve()
-                .ByInstaller<GameBoardInstaller>()
-                .AsSingle();
+            GameBoardInstaller.Install(Container);
         }
 
         private void BindCamera()
@@ -38,7 +43,7 @@ namespace CobeBase.Core.Installers
 
         private void BindInputService()
         {
-            Container.BindInterfacesAndSelfTo<PlayerInputHandler>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MouseInput>().AsSingle();
         }
 
         private void BindBootstraper()
